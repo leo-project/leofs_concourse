@@ -1,2 +1,2 @@
-# leofs_IT
-An integration tool for LeoFS
+# leofs_concourse
+An integration tool for LeoFS, which is powered by [Concourse CI](https://concourse.ci/index.html).
