@@ -1,0 +1,23 @@
+jobs:
+  - name: leofs_basho_bench
+    serial: true
+    plan:
+    - aggregate:
+      - get: leofs_concourse
+        trigger: true
+    - task:
+      config:
+        platform: linux
+        image: docker://windkithk/leofs_basho_bench
+        inputs:
+          - name: leofs_concourse
+            path: .
+          run:
+            path: files/hello.sh
+
+resources:
+  - name: leofs_concourse
+    type: git
+    source: 
+      uri: https://github.com/leo-project/leofs_concourse
+      branch: master
