@@ -45,7 +45,7 @@ jobs:
         - name: leofs_ansible
         - name: leofs_src
         run:
-          path: leofs_concourse/files/deploy_leofs.sh
+          path: leofs_concourse/TestScenario1/files/deploy_leofs.sh
           args:
             - {{ANSIBLE_KEY}}
 
@@ -71,6 +71,6 @@ jobs:
         - name: leofs_concourse
         - name: leofs_client_tests
         run:
-          path: leofs_concourse/files/run_client_tests.sh
+          path: leofs_concourse/TestScenario1/files/run_client_tests.sh
           args: [{{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
 

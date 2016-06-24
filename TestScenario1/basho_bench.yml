@@ -17,7 +17,7 @@ jobs:
         outputs:
         - name: leofs_basho_bench_conf
         run:
-          path: leofs_concourse/files/set_basho_bench_conf.sh
+          path: leofs_concourse/TestScenario1/files/set_basho_bench_conf.sh
           args: [{{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
 
     - task: build_basho_bench
@@ -28,7 +28,7 @@ jobs:
         - name: leofs_basho_bench_src
         - name: leofs_concourse
         run:
-          path: leofs_concourse/files/build_basho_bench.sh
+          path: leofs_concourse/TestScenario1/files/build_basho_bench.sh
         outputs:
         - name: leofs_basho_bench_bin
   
