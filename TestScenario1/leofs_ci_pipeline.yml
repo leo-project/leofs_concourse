@@ -62,15 +62,65 @@ jobs:
         passed: [leofs_deploy]
         trigger: true
       - get: leofs_concourse
-        passed: [leofs_deploy]
-    - task: leofs_client_tests
-      config:
-        platform: linux
-        image: docker:///windkithk/leofs_tester
-        inputs:
-        - name: leofs_concourse
-        - name: leofs_client_tests
-        run:
-          path: leofs_concourse/TestScenario1/files/run_client_tests.sh
-          args: [{{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
-
+#        passed: [leofs_deploy]
+    - aggregate:
+      - task: aws-sdk-java
+        config:
+          platform: linux
+          image: docker:///windkithk/leofs_tester
+          inputs:
+          - name: leofs_concourse
+          - name: leofs_client_tests
+          run:
+            path: leofs_concourse/TestScenario1/files/run_client_tests.sh
+            args: ["aws-sdk-java", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+      - task: aws-sdk-php
+        config:
+          platform: linux
+          image: docker:///windkithk/leofs_tester
+          inputs:
+          - name: leofs_concourse
+          - name: leofs_client_tests
+          run:
+            path: leofs_concourse/TestScenario1/files/run_client_tests.sh
+            args: ["aws-sdk-php", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+      - task: aws-sdk-ruby
+        config:
+          platform: linux
+          image: docker:///windkithk/leofs_tester
+          inputs:
+          - name: leofs_concourse
+          - name: leofs_client_tests
+          run:
+            path: leofs_concourse/TestScenario1/files/run_client_tests.sh
+            args: ["aws-sdk-ruby", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+      - task: boto
+        config:
+          platform: linux
+          image: docker:///windkithk/leofs_tester
+          inputs:
+          - name: leofs_concourse
+          - name: leofs_client_tests
+          run:
+            path: leofs_concourse/TestScenario1/files/run_client_tests.sh
+            args: ["boto", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+      - task: erlcloud
+        config:
+          platform: linux
+          image: docker:///windkithk/leofs_tester
+          inputs:
+          - name: leofs_concourse
+          - name: leofs_client_tests
+          run:
+            path: leofs_concourse/TestScenario1/files/run_client_tests.sh
+            args: ["erlcloud", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+      - task: jclouds
+        config:
+          platform: linux
+          image: docker:///windkithk/leofs_tester
+          inputs:
+          - name: leofs_concourse
+          - name: leofs_client_tests
+          run:
+            path: leofs_concourse/TestScenario1/files/run_client_tests.sh
+            args: ["jclouds", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
