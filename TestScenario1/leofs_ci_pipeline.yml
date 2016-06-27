@@ -1,3 +1,10 @@
+resource_types:
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
+    tag: latest
+
 resources:
   - name: leofs_concourse
     type: git
@@ -22,6 +29,10 @@ resources:
   - name: timer_daily
     type: time
     source: {interval: 4h}
+  - name: slack-alert
+    type: slack-notification
+    source:
+      url: {{SLACK_URL}}
 
 jobs:
   - name: leofs_deploy
@@ -48,6 +59,11 @@ jobs:
           path: leofs_concourse/TestScenario1/files/deploy_leofs.sh
           args:
             - {{ANSIBLE_KEY}}
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Build LeoFS from Source Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
 
   - name: client_test
     plan:
@@ -124,3 +140,12 @@ jobs:
           run:
             path: leofs_concourse/TestScenario1/files/run_client_tests.sh
             args: ["jclouds", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Client Test CI Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+    - put: slack-alert
+      params:
+        text: |
+          Client Test CI Completed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
