@@ -28,7 +28,7 @@ resources:
       branch: develop
   - name: timer_daily
     type: time
-    source: {interval: 4h}
+    source: {interval: 24h}
   - name: slack-alert
     type: slack-notification
     source:
