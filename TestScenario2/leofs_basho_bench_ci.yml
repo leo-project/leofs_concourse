@@ -1,0 +1,100 @@
+resources:
+  - name: leofs_concourse
+    type: git
+    source:
+      uri: https://github.com/leo-project/leofs_concourse.git
+      branch: master
+  - name: leofs_ansible
+    type: git
+    source:
+      uri: https://github.com/leo-project/leofs_ansible.git
+      branch: master
+  - name: leofs_src
+    type: git
+    source:
+      uri: https://github.com/leo-project/leofs.git
+      branch: master
+  - name: leofs_basho_bench_src
+    type: git
+    source:
+      uri: https://github.com/leo-project/basho_bench.git
+      branch: 1.4
+  - name: timer_daily
+    type: time
+    source: {interval: 24h}
+
+jobs:
+  - name: leofs_deploy
+    plan:
+    - aggregate:
+      - get: leofs_concourse
+      - get: leofs_ansible
+      - get: leofs_src
+        trigger: true
+      - get: timer_daily
+        trigger: true
+      - get: leofs_basho_bench_src
+        trigger: true
+
+    - task: run_ansible
+      config:
+        platform: linux
+        image: docker:///windkithk/leofs_deploy
+        inputs:
+        - name: leofs_concourse
+        - name: leofs_ansible
+        - name: leofs_src
+        run:
+          path: leofs_concourse/TestScenario2/files/deploy_leofs_small.sh
+          args:
+            - {{ANSIBLE_KEY}}
+
+  - name: basho_bench
+    plan:
+    - aggregate:
+      - get: leofs_src
+        passed: [leofs_deploy]
+        trigger: true
+      - get: timer_daily
+        passed: [leofs_deploy]
+        trigger: true
+      - get: leofs_basho_bench_src
+        passed: [leofs_deploy]
+        trigger: true
+      - get: leofs_concourse
+
+    - task: setup_basho_bench
+      config:
+        platform: linux
+        image: docker:///windkithk/leofs_basho_bench
+        inputs:
+        - name: leofs_concourse
+        outputs:
+        - name: leofs_basho_bench_conf
+        run:
+          path: leofs_concourse/TestScenario2/files/set_basho_bench_conf.sh
+          args: [{{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+
+    - task: build_basho_bench
+      config:
+        platform: linux
+        image: docker:///windkithk/leofs_basho_bench
+        inputs:
+        - name: leofs_basho_bench_src
+        - name: leofs_concourse
+        run:
+          path: leofs_concourse/TestScenario2/files/build_basho_bench.sh
+        outputs:
+        - name: leofs_basho_bench_bin
+  
+    - task: image_f4m
+      config:
+        platform: linux
+        image: docker:///windkithk/leofs_basho_bench
+        inputs:
+        - name: leofs_concourse
+        - name: leofs_basho_bench_bin
+        - name: leofs_basho_bench_conf
+        run:
+          path: leofs_concourse/TestScenario2/files/run_basho_bench.sh
+          args: ["image_f4m", "image_f4m_load.conf", "image_f4m_r95w5_5min.conf"]

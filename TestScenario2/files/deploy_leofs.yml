@@ -1,0 +1,74 @@
+---
+
+## Install from Package
+- hosts: leofs_nodes
+  serial: 1
+  name: Install LeoFS From Package
+  roles:
+      - { role: common, do_install: true }
+
+## Do Configuration
+- hosts: leo_manager_0
+  name: Config LeoManager (Primary)
+  roles:
+      - { role: leo_manager_0, do_config: true }
+
+- hosts: leo_manager_1
+  name: Config LeoManager (Secondary)
+  roles:
+      - { role: leo_manager_1, do_config: true }
+
+- hosts: leo_gateway
+  name: Config LeoGateway
+  roles:
+      - { role: leo_gateway, do_config: true }
+
+- hosts: leo_storage
+  name: Config LeoStorage
+  roles:
+      - { role: leo_storage, do_config: true }
+
+## Start LeoFS
+- hosts: localhost
+  gather_facts: False
+  name: Config Admin Tool
+  roles:
+      - { role: controller }
+
+- hosts: leo_manager_0
+  name: Start LeoManager (Primary)
+  roles:
+      - { role: leo_manager_0, control_leofs: "start" }
+
+- hosts: leo_manager_1
+  name: Start LeoManager (Secondary)
+  roles:
+      - { role: leo_manager_1, control_leofs: "start" }
+
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Wait for LeoManagers
+        pause: seconds=5
+
+- hosts: leo_storage
+  name: Start LeoStorages
+  roles:
+      - { role: leo_storage, control_leofs: "start" }
+
+- hosts: leo_gateway
+  name: Start LeoGateway
+  roles:
+      - { role: leo_gateway, control_leofs: "start" }
+
+- hosts: localhost
+  gather_facts: False
+  tasks:
+    - name: Wait for LeoStorages
+      pause: seconds=30
+
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Start LeoFS
+        command: ./leofs-adm start
