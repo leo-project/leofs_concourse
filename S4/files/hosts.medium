@@ -17,11 +17,16 @@ source="build"
 192.168.100.35 
 
 [leo_storage]
-192.168.100.36 leofs_module_nodename=S0@192.168.100.36
-192.168.100.37 leofs_module_nodename=S1@192.168.100.37
-192.168.100.38 leofs_module_nodename=S2@192.168.100.38
-192.168.100.39 leofs_module_nodename=S3@192.168.100.39
-192.168.100.40 leofs_module_nodename=S4@192.168.100.40
+192.168.100.36 leofs_module_nodename=S1@192.168.100.36
+192.168.100.37 leofs_module_nodename=S2@192.168.100.37
+192.168.100.38 leofs_module_nodename=S3@192.168.100.38
+192.168.100.39 leofs_module_nodename=S4@192.168.100.39
+192.168.100.40 leofs_module_nodename=S5@192.168.100.40
+192.168.100.41 leofs_module_nodename=S6@192.168.100.41
+192.168.100.42 leofs_module_nodename=S7@192.168.100.42
+192.168.100.43 leofs_module_nodename=S8@192.168.100.43
+192.168.100.44 leofs_module_nodename=S9@192.168.100.44
+192.168.100.45 leofs_module_nodename=S10@192.168.100.45
 
 [leo_storage:vars]
 leo_storage_container_paths=["/ssd/avs"]
