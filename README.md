@@ -5,10 +5,10 @@ An continuous integration(CI) tool for LeoFS, which is powered by [Concourse CI]
 
 | No.| Status   | Name                                                                                                          | Description  |
 |----|----------|---------------------------------------------------------------------------------------------------------------|--------------|
-| 1  | **Beta** | [Client Test w/LeoFS Ansible](https://github.com/leo-project/leofs_concourse/tree/master/TestScenario1)       |              |
+| 1  | **Beta** | [Client Test w/LeoFS Ansible](https://github.com/leo-project/leofs_concourse/tree/master/S1)                  | S3 SDKs Test CI |
 | 2  | ToDo     | [Integration Test w/LeoFS Ansible]()                                                                          |              |
 | 3  | ToDo     | [Multi Data Center Test w/LeoFS Ansible]()                                                                    |              |
-| 4  | **WIP**  | [Performance Test w/Basho Bench and LeoFS Ansible]()                                                          |              |
+| 4  | **WIP**  | [Performance Test w/Basho Bench and LeoFS Ansible](https://github.com/leo-project/leofs_concourse/tree/master/S4) | Performance Test with Basho Bench |
 | 5  | ToDo     | [Build Test + Making packages for LeoFS shipment]()                                                           |              |
 
 ## Sponsors

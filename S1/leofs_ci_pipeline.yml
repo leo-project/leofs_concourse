@@ -56,7 +56,7 @@ jobs:
         - name: leofs_ansible
         - name: leofs_src
         run:
-          path: leofs_concourse/TestScenario1/files/deploy_leofs.sh
+          path: leofs_concourse/S1/files/deploy_leofs.sh
           args:
             - {{ANSIBLE_KEY}}
       on_failure:
@@ -88,7 +88,7 @@ jobs:
           - name: leofs_concourse
           - name: leofs_client_tests
           run:
-            path: leofs_concourse/TestScenario1/files/run_client_tests.sh
+            path: leofs_concourse/S1/files/run_client_tests.sh
             args: ["aws-sdk-java", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
       - task: aws-sdk-php
         config:
@@ -98,7 +98,7 @@ jobs:
           - name: leofs_concourse
           - name: leofs_client_tests
           run:
-            path: leofs_concourse/TestScenario1/files/run_client_tests.sh
+            path: leofs_concourse/S1/files/run_client_tests.sh
             args: ["aws-sdk-php", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
       - task: aws-sdk-ruby
         config:
@@ -108,7 +108,7 @@ jobs:
           - name: leofs_concourse
           - name: leofs_client_tests
           run:
-            path: leofs_concourse/TestScenario1/files/run_client_tests.sh
+            path: leofs_concourse/S1/files/run_client_tests.sh
             args: ["aws-sdk-ruby", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
       - task: boto
         config:
@@ -118,7 +118,7 @@ jobs:
           - name: leofs_concourse
           - name: leofs_client_tests
           run:
-            path: leofs_concourse/TestScenario1/files/run_client_tests.sh
+            path: leofs_concourse/S1/files/run_client_tests.sh
             args: ["boto", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
       - task: erlcloud
         config:
@@ -128,7 +128,7 @@ jobs:
           - name: leofs_concourse
           - name: leofs_client_tests
           run:
-            path: leofs_concourse/TestScenario1/files/run_client_tests.sh
+            path: leofs_concourse/S1/files/run_client_tests.sh
             args: ["erlcloud", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
       - task: jclouds
         config:
@@ -138,7 +138,7 @@ jobs:
           - name: leofs_concourse
           - name: leofs_client_tests
           run:
-            path: leofs_concourse/TestScenario1/files/run_client_tests.sh
+            path: leofs_concourse/S1/files/run_client_tests.sh
             args: ["jclouds", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
       on_failure:
         put: slack-alert
