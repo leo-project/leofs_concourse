@@ -5,9 +5,10 @@ LEOFS_GW_PORT=$2
 TEMPLATE_PATH="leofs_concourse/S4/files/templates"
 CONF_PATH="leofs_basho_bench_conf"
 
-TARGETS=("image_f4m_load" "image_f4m_r95w5_5min")
-
-for target in "${TARGETS[@]}"
+shopt -s nullglob
+for template in ${TEMPLATE_PATH}/*.conf.j2
 do
-	sed -e "s/{{ leofs_gw_hosts }}/\"$LEOFS_GW_HOST\"/g;s/{{ leofs_gw_port }}/$LEOFS_GW_PORT/g" ${TEMPLATE_PATH}/${target}.conf.j2 | tee $CONF_PATH/${target}.conf
+	target=${template##*/}
+	target=${target%.*}
+	sed -e "s/{{ leofs_gw_hosts }}/\"$LEOFS_GW_HOST\"/g;s/{{ leofs_gw_port }}/$LEOFS_GW_PORT/g" ${TEMPLATE_PATH}/${target}.j2 | tee $CONF_PATH/${target}
 done
