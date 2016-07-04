@@ -48,17 +48,11 @@ jobs:
         trigger: true
 
     - task: run_ansible
-      config:
-        platform: linux
-        image: docker:///windkithk/leofs_deploy
-        inputs:
-        - name: leofs_concourse
-        - name: leofs_ansible
-        - name: leofs_src
-        run:
-          path: leofs_concourse/scripts/deploy_leofs_small.sh
-          args:
-            - {{ANSIBLE_KEY}}
+      file: leofs_concourse/tasks/run_ansible.yml
+      params: 
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.small 
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
       on_failure:
         put: slack-alert
         params:
@@ -81,65 +75,41 @@ jobs:
 #        passed: [leofs_deploy]
     - aggregate:
       - task: aws-sdk-java
-        config:
-          platform: linux
-          image: docker:///windkithk/leofs_tester
-          inputs:
-          - name: leofs_concourse
-          - name: leofs_client_tests
-          run:
-            path: leofs_concourse/scripts/run_client_tests.sh
-            args: ["aws-sdk-java", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "aws-sdk-java"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
       - task: aws-sdk-php
-        config:
-          platform: linux
-          image: docker:///windkithk/leofs_tester
-          inputs:
-          - name: leofs_concourse
-          - name: leofs_client_tests
-          run:
-            path: leofs_concourse/scripts/run_client_tests.sh
-            args: ["aws-sdk-php", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "aws-sdk-php"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
       - task: aws-sdk-ruby
-        config:
-          platform: linux
-          image: docker:///windkithk/leofs_tester
-          inputs:
-          - name: leofs_concourse
-          - name: leofs_client_tests
-          run:
-            path: leofs_concourse/scripts/run_client_tests.sh
-            args: ["aws-sdk-ruby", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "aws-sdk-ruby"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
       - task: boto
-        config:
-          platform: linux
-          image: docker:///windkithk/leofs_tester
-          inputs:
-          - name: leofs_concourse
-          - name: leofs_client_tests
-          run:
-            path: leofs_concourse/scripts/run_client_tests.sh
-            args: ["boto", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "boto"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
       - task: erlcloud
-        config:
-          platform: linux
-          image: docker:///windkithk/leofs_tester
-          inputs:
-          - name: leofs_concourse
-          - name: leofs_client_tests
-          run:
-            path: leofs_concourse/scripts/run_client_tests.sh
-            args: ["erlcloud", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "erlcloud"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
       - task: jclouds
-        config:
-          platform: linux
-          image: docker:///windkithk/leofs_tester
-          inputs:
-          - name: leofs_concourse
-          - name: leofs_client_tests
-          run:
-            path: leofs_concourse/scripts/run_client_tests.sh
-            args: ["jclouds", {{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "jclouds"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
       on_failure:
         put: slack-alert
         params:

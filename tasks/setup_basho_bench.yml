@@ -1,0 +1,17 @@
+---
+platform: linux
+
+image: docker:///windkithk/leofs_basho_bench
+
+params:
+  LEOFS_GW_HOST:
+  LEOFS_GW_PORT:
+
+inputs:
+- name: leofs_concourse
+
+outputs:
+- name: leofs_basho_bench_conf
+
+run:
+  path: leofs_concourse/scripts/set_basho_bench_conf.sh

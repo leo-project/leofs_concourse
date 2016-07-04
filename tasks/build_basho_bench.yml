@@ -1,0 +1,15 @@
+---
+platform: linux
+
+image: docker:///windkithk/leofs_basho_bench
+
+inputs:
+- name: leofs_concourse
+- name: leofs_basho_bench_src
+
+outputs:
+- name: leofs_basho_bench_bin
+
+run:
+  path: leofs_concourse/scripts/build_basho_bench.sh
+

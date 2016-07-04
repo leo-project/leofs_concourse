@@ -1,0 +1,16 @@
+---
+platform: linux
+
+image: docker:///windkithk/leofs_tester
+
+params:
+  CLIENT_TEST_SDK:
+  LEOFS_GW_HOST:
+  LEOFS_GW_PORT:
+
+inputs:
+- name: leofs_concourse
+- name: leofs_client_tests
+
+run:
+  path: leofs_concourse/scripts/run_client_tests.sh

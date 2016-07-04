@@ -37,17 +37,11 @@ jobs:
         trigger: true
 
     - task: run_ansible
-      config:
-        platform: linux
-        image: docker:///windkithk/leofs_deploy
-        inputs:
-        - name: leofs_concourse
-        - name: leofs_ansible
-        - name: leofs_src
-        run:
-          path: leofs_concourse/scripts/deploy_leofs_small.sh
-          args:
-            - {{ANSIBLE_KEY}}
+      file: leofs_concourse/tasks/run_ansible.yml
+      params: 
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.small 
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
 
   - name: basho_bench
     plan:
@@ -64,37 +58,17 @@ jobs:
       - get: leofs_concourse
 
     - task: setup_basho_bench
-      config:
-        platform: linux
-        image: docker:///windkithk/leofs_basho_bench
-        inputs:
-        - name: leofs_concourse
-        outputs:
-        - name: leofs_basho_bench_conf
-        run:
-          path: leofs_concourse/scripts/set_basho_bench_conf.sh
-          args: [{{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
+      file: leofs_concourse/tasks/setup_basho_bench.yml
+      params:
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
 
     - task: build_basho_bench
-      config:
-        platform: linux
-        image: docker:///windkithk/leofs_basho_bench
-        inputs:
-        - name: leofs_basho_bench_src
-        - name: leofs_concourse
-        run:
-          path: leofs_concourse/scripts/build_basho_bench.sh
-        outputs:
-        - name: leofs_basho_bench_bin
+      file: leofs_concourse/tasks/build_basho_bench.yml
   
     - task: image_f4m
-      config:
-        platform: linux
-        image: docker:///windkithk/leofs_basho_bench
-        inputs:
-        - name: leofs_concourse
-        - name: leofs_basho_bench_bin
-        - name: leofs_basho_bench_conf
-        run:
-          path: leofs_concourse/scripts/run_basho_bench.sh
-          args: ["image_f4m", "image_f4m_load.conf", "image_f4m_r95w5_5min.conf"]
+      file: leofs_concourse/tasks/run_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "image_f4m"
+        BASHO_BENCH_LOAD_CONF: "image_f4m_load.conf"
+        BASHO_BENCH_TEST_CONF: "image_f4m_r95w5_5min.conf"

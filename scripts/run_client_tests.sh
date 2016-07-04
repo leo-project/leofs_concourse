@@ -2,41 +2,41 @@
 set -x
 set -e
 
-sdk=$1
-host=$2
-port=$3
+SDK=$CLIENT_TEST_SDK
+GW_HOST=$LEOFS_GW_HOST
+GW_PORT=$LEOFS_GW_PORT
 
 cd leofs_client_tests
 (cd temp_data; ./gen.sh)
 
 ## aws-sdk-go only v4
-#(export GOPATH=$HOME/go; cd aws-sdk-go; go run LeoFSTest.go v4 $host $port testg)
+#(export GOPATH=$HOME/go; cd aws-sdk-go; go run LeoFSTest.go v4 $GW_HOST $GW_PORT testg)
 
-cd $sdk
-if [ $sdk == "aws-sdk-java" ]
+cd $SDK
+if [ $SDK == "aws-sdk-java" ]
 then
-	(ant -Dsignver=v2 -Dhost=$host -Dport=$port -Dbucket="testj")
+	(ant -Dsignver=v2 -Dhost=$GW_HOST -Dport=$GW_PORT -Dbucket="testj")
 
-elif [ $sdk == "aws-sdk-php" ]
+elif [ $SDK == "aws-sdk-php" ]
 then
-	(echo "$host testp.$host" >> /etc/hosts)
-	(curl -sS https://getcomposer.org/installer | php; php composer.phar install; php LeoFSTest.php v2 $host $port testp)
+	(echo "$GW_HOST testp.$GW_HOST" >> /etc/hosts)
+	(curl -sS https://getcomposer.org/installer | php; php composer.phar install; php LeoFSTest.php v2 $GW_HOST $GW_PORT testp)
 
-elif [ $sdk == "aws-sdk-ruby" ]
+elif [ $SDK == "aws-sdk-ruby" ]
 then
-	(echo "$host testr.$host" >> /etc/hosts)
-	(ruby LeoFSTest.rb v2 $host $port testr)
+	(echo "$GW_HOST testr.$GW_HOST" >> /etc/hosts)
+	(ruby LeoFSTest.rb v2 $GW_HOST $GW_PORT testr)
 
-elif [ $sdk == "boto" ]
+elif [ $SDK == "boto" ]
 then
-	(python LeoFSTest.py v2 $host $port testb)
+	(python LeoFSTest.py v2 $GW_HOST $GW_PORT testb)
 
-elif [ $sdk == "erlcloud" ]
+elif [ $SDK == "erlcloud" ]
 then
-	(echo "$host teste.$host" >> /etc/hosts)
-	(make deps; make compile; ./LeoFSTest.erl v2 $host $port teste)
+	(echo "$GW_HOST teste.$GW_HOST" >> /etc/hosts)
+	(make deps; make compile; ./LeoFSTest.erl v2 $GW_HOST $GW_PORT teste)
 
-elif [ $sdk == "jclouds" ]
+elif [ $SDK == "jclouds" ]
 then
-	(mvn dependency:copy-dependencies; ant -Dsignver=v2 -Dhost=$host -Dport=$port -Dbucket="testj")
+	(mvn dependency:copy-dependencies; ant -Dsignver=v2 -Dhost=$GW_HOST -Dport=$GW_PORT -Dbucket="testj")
 fi
