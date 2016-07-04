@@ -2,7 +2,7 @@
 
 LEOFS_GW_HOST=$1
 LEOFS_GW_PORT=$2
-TEMPLATE_PATH="leofs_concourse/S4/files/templates"
+TEMPLATE_PATH="leofs_concourse/templates"
 CONF_PATH="leofs_basho_bench_conf"
 
 shopt -s nullglob

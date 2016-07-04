@@ -45,7 +45,7 @@ jobs:
         - name: leofs_ansible
         - name: leofs_src
         run:
-          path: leofs_concourse/S4/files/deploy_leofs_small.sh
+          path: leofs_concourse/scripts/deploy_leofs_small.sh
           args:
             - {{ANSIBLE_KEY}}
 
@@ -72,7 +72,7 @@ jobs:
         outputs:
         - name: leofs_basho_bench_conf
         run:
-          path: leofs_concourse/S4/files/set_basho_bench_conf.sh
+          path: leofs_concourse/scripts/set_basho_bench_conf.sh
           args: [{{LEOFS_GW_HOST}},{{LEOFS_GW_PORT}}]
 
     - task: build_basho_bench
@@ -83,7 +83,7 @@ jobs:
         - name: leofs_basho_bench_src
         - name: leofs_concourse
         run:
-          path: leofs_concourse/S4/files/build_basho_bench.sh
+          path: leofs_concourse/scripts/build_basho_bench.sh
         outputs:
         - name: leofs_basho_bench_bin
   
@@ -96,5 +96,5 @@ jobs:
         - name: leofs_basho_bench_bin
         - name: leofs_basho_bench_conf
         run:
-          path: leofs_concourse/S4/files/run_basho_bench.sh
+          path: leofs_concourse/scripts/run_basho_bench.sh
           args: ["image_f4m", "image_f4m_load.conf", "image_f4m_r95w5_5min.conf"]
