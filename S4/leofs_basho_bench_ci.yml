@@ -19,6 +19,12 @@ resources:
     source:
       uri: https://github.com/leo-project/basho_bench.git
       branch: 1.4
+  - name: leofs_notes
+    type: git
+    source:
+      uri: git@github.com:windkit/test.git
+      branch: master
+      private_key: {{ANSIBLE_KEY}}
   - name: timer_daily
     type: time
     source: {interval: 24h}
@@ -56,6 +62,7 @@ jobs:
         passed: [leofs_deploy]
         trigger: true
       - get: leofs_concourse
+      - get: leofs_notes
 
     - task: setup_basho_bench
       file: leofs_concourse/tasks/setup_basho_bench.yml
@@ -71,4 +78,14 @@ jobs:
       params:
         BASHO_BENCH_TEST_NAME: "image_f4m"
         BASHO_BENCH_LOAD_CONF: "image_f4m_load.conf"
-        BASHO_BENCH_TEST_CONF: "image_f4m_r95w5_5min.conf"
+        BASHO_BENCH_TEST_CONF: "image_f4m_r95w5_60min.conf"
+
+    - task: parse_log
+      file: leofs_concourse/tasks/parse_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "image_f4m"
+        BASHO_BENCH_ERROR_THRES: 0.1
+
+    - put: leofs_notes
+      params: {repository: leofs_notes_update}
+

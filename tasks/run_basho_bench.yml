@@ -13,5 +13,8 @@ inputs:
 - name: leofs_basho_bench_bin
 - name: leofs_basho_bench_conf
 
+outputs:
+- name: leofs_basho_bench_result
+
 run:
   path: leofs_concourse/scripts/run_basho_bench.sh

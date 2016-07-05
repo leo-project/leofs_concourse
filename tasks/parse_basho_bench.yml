@@ -1,0 +1,19 @@
+---
+platform: linux
+
+image: docker:///windkithk/leofs_parser
+
+params:
+  BASHO_BENCH_TEST_NAME:
+  BASHO_BENCH_ERROR_THRES:
+
+inputs:
+- name: leofs_basho_bench_result
+- name: leofs_concourse
+- name: leofs_notes
+
+outputs:
+- name: leofs_notes_update
+
+run:
+  path: leofs_concourse/scripts/parse_basho_bench.sh
