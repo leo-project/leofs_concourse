@@ -20,5 +20,9 @@ ansible-playbook -i ../$ANSIBLE_INVENTORY deploy_leofs.yml -u wilson --private-k
 ./leofs-adm add-endpoint $LEOFS_GW_HOST
 sleep 5
 ./leofs-adm add-endpoint $LEOFS_GW_HOST
-
 ./leofs-adm add-bucket test 05236
+
+for bucket in "${BUCKETS[@]}"
+do
+	./leofs-adm add-bucket $bucket 05236
+done
