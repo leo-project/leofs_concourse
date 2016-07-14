@@ -9,7 +9,7 @@ GRAFANA_BASE="http://192.168.100.31:3000"
 LEOFS_MANAGER_HOST="192.168.100.35"
 LEOFS_MANAGER_PORT=10010
 
-cd leofs_basho_bench_result/result
+cd leofs_basho_bench_result/result_$TEST_NAME
 
 ERROR=$(tail -n +2 summary.csv | awk '{total+=$3; err+=$5}END{print err/total}')
 FAILED=$(awk -v err=$ERROR -v thres=$ERROR_THRES 'BEGIN{if (err >= thres) {print 1} else {print 0}}')
@@ -33,7 +33,7 @@ cd leofs_notes_update
 
 TIME=$(TZ=Asia/Tokyo date +"%Y%m%d_%H%M")
 mkdir ${TIME}_$TEST_NAME
-(cd ${TIME}_$TEST_NAME && cp -r ../../leofs_basho_bench_result/result/* .)
+(cd ${TIME}_$TEST_NAME && cp -r ../../leofs_basho_bench_result/result_$TEST_NAME/* .)
 
 git config --global user.email "nobody@concourse.ci"
 git config --global user.name "Concourse"

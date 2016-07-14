@@ -3,7 +3,7 @@ resources:
     type: git
     source:
       uri: https://github.com/leo-project/leofs_concourse.git
-      branch: master
+      branch: develop
   - name: leofs_ansible
     type: git
     source:
@@ -89,3 +89,18 @@ jobs:
     - put: leofs_notes
       params: {repository: leofs_notes_update}
 
+    - task: leofs1m_f100k
+      file: leofs_concourse/tasks/run_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "leofs1m_f100k"
+        BASHO_BENCH_LOAD_CONF: "leofs1m_f100k_load.conf"
+        BASHO_BENCH_TEST_CONF: "leofs1m_f100k_r95w5_60min.conf"
+
+    - task: parse_log
+      file: leofs_concourse/tasks/parse_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "leofs1m_f100k"
+        BASHO_BENCH_ERROR_THRES: 0.1
+
+    - put: leofs_notes
+      params: {repository: leofs_notes_update}
