@@ -1,0 +1,46 @@
+# Please check roles/common/vars/leofs_releases for available versions
+[all:vars]
+leofs_version="master"
+build_temp_path="/tmp/leofs_builder"
+build_install_path="/tmp/"
+source="build"
+
+[builder]
+192.168.100.31
+
+# nodename of leo_manager_0 and leo_manager_1 are set at group_vars/all
+[leo_manager_0]
+192.168.100.35 
+
+# nodename of leo_manager_0 and leo_manager_1 are set at group_vars/all
+[leo_manager_1]
+192.168.100.35 
+
+[leo_storage]
+192.168.100.36 leofs_module_nodename=S1@192.168.100.36
+192.168.100.37 leofs_module_nodename=S2@192.168.100.37
+192.168.100.38 leofs_module_nodename=S3@192.168.100.38
+192.168.100.39 leofs_module_nodename=S4@192.168.100.39
+192.168.100.40 leofs_module_nodename=S5@192.168.100.40
+192.168.100.41 leofs_module_nodename=S6@192.168.100.41
+192.168.100.42 leofs_module_nodename=S7@192.168.100.42
+192.168.100.43 leofs_module_nodename=S8@192.168.100.43
+192.168.100.44 leofs_module_nodename=S9@192.168.100.44
+192.168.100.45 leofs_module_nodename=S10@192.168.100.45
+192.168.100.46 leofs_module_nodename=S11@192.168.100.46
+192.168.100.47 leofs_module_nodename=S12@192.168.100.47
+192.168.100.48 leofs_module_nodename=S13@192.168.100.48
+192.168.100.49 leofs_module_nodename=S14@192.168.100.49
+192.168.100.50 leofs_module_nodename=S15@192.168.100.50
+
+[leo_storage:vars]
+leo_storage_container_paths=["/ssd/avs"]
+
+[leo_gateway]
+192.168.100.35 leofs_module_nodename=G0@192.168.100.35
+
+[leofs_nodes:children]
+leo_manager_0
+leo_manager_1
+leo_gateway
+leo_storage

@@ -12,8 +12,10 @@ chmod 600 ansible_key
 
 cp ../leofs_concourse/ansible/deploy_leofs.yml .
 
-ansible-playbook -i ../$ANSIBLE_INVENTORY purge_leofs.yml -u wilson --private-key=ansible_key 
-ansible-playbook -i ../$ANSIBLE_INVENTORY build_leofs.yml -u wilson --private-key=ansible_key 
+ansible-playbook -i ../leofs_concourse/ansible/hosts.large purge_leofs.yml -u wilson --private-key=ansible_key 
+if [ "$DO_BUILD" = true ]; then
+	ansible-playbook -i ../$ANSIBLE_INVENTORY build_leofs.yml -u wilson --private-key=ansible_key 
+fi
 ansible-playbook -i ../$ANSIBLE_INVENTORY deploy_leofs.yml -u wilson --private-key=ansible_key 
 
 ./leofs-adm status

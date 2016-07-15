@@ -25,9 +25,9 @@ resources:
       uri: git@github.com:windkit/test.git
       branch: master
       private_key: {{ANSIBLE_KEY}}
-  - name: timer_daily
+  - name: periodic
     type: time
-    source: {interval: 24h}
+    source: {interval: 72h}
 
 jobs:
   - name: leofs_deploy
@@ -37,7 +37,7 @@ jobs:
       - get: leofs_ansible
       - get: leofs_src
         trigger: true
-      - get: timer_daily
+      - get: periodic
         trigger: true
       - get: leofs_basho_bench_src
         trigger: true
@@ -45,6 +45,7 @@ jobs:
     - task: run_ansible
       file: leofs_concourse/tasks/run_ansible.yml
       params: 
+        DO_BUILD: true
         ANSIBLE_KEY: {{ANSIBLE_KEY}}
         ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.small 
         LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
@@ -55,7 +56,7 @@ jobs:
       - get: leofs_src
         passed: [leofs_deploy]
         trigger: true
-      - get: timer_daily
+      - get: periodic
         passed: [leofs_deploy]
         trigger: true
       - get: leofs_basho_bench_src
@@ -73,6 +74,22 @@ jobs:
     - task: build_basho_bench
       file: leofs_concourse/tasks/build_basho_bench.yml
   
+##    - task: image_f4k
+##      file: leofs_concourse/tasks/run_basho_bench.yml
+##      params:
+##        BASHO_BENCH_TEST_NAME: "image_f4k"
+##        BASHO_BENCH_LOAD_CONF: "image_f4k_load.conf"
+##        BASHO_BENCH_TEST_CONF: "image_f4k_r95w5_1min.conf"
+##
+##    - task: parse_log
+##      file: leofs_concourse/tasks/parse_basho_bench.yml
+##      params:
+##        BASHO_BENCH_TEST_NAME: "image_f4k"
+##        BASHO_BENCH_ERROR_THRES: 0.1
+##
+##    - put: leofs_notes
+##      params: {repository: leofs_notes_update}
+##
     - task: image_f4m
       file: leofs_concourse/tasks/run_basho_bench.yml
       params:
@@ -100,6 +117,212 @@ jobs:
       file: leofs_concourse/tasks/parse_basho_bench.yml
       params:
         BASHO_BENCH_TEST_NAME: "leofs1m_f100k"
+        BASHO_BENCH_ERROR_THRES: 0.1
+
+    - put: leofs_notes
+      params: {repository: leofs_notes_update}
+
+    - task: leofs15m_f10k
+      file: leofs_concourse/tasks/run_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "leofs15m_f10k"
+        BASHO_BENCH_LOAD_CONF: "leofs15m_f10k_load.conf"
+        BASHO_BENCH_TEST_CONF: "leofs15m_f10k_r95w5_60min.conf"
+
+    - task: parse_log
+      file: leofs_concourse/tasks/parse_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "leofs15m_f10k"
+        BASHO_BENCH_ERROR_THRES: 0.1
+
+    - put: leofs_notes
+      params: {repository: leofs_notes_update}
+
+  - name: leofs_deploy_medium
+    plan:
+    - aggregate:
+      - get: leofs_concourse
+      - get: leofs_ansible
+      - get: leofs_src
+        passed: [basho_bench]
+        trigger: true
+      - get: periodic
+        passed: [basho_bench]
+        trigger: true
+      - get: leofs_basho_bench_src
+        passed: [basho_bench]
+        trigger: true
+
+    - task: run_ansible_medium
+      file: leofs_concourse/tasks/run_ansible.yml
+      params: 
+        DO_BUILD: false
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.medium 
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+
+  - name: basho_bench_medium
+    plan:
+    - aggregate:
+      - get: leofs_src
+        passed: [leofs_deploy_medium]
+        trigger: true
+      - get: periodic
+        passed: [leofs_deploy_medium]
+        trigger: true
+      - get: leofs_basho_bench_src
+        passed: [leofs_deploy_medium]
+        trigger: true
+      - get: leofs_concourse
+      - get: leofs_notes
+
+    - task: setup_basho_bench
+      file: leofs_concourse/tasks/setup_basho_bench.yml
+      params:
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+
+    - task: build_basho_bench
+      file: leofs_concourse/tasks/build_basho_bench.yml
+  
+    - task: image_f4m
+      file: leofs_concourse/tasks/run_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "image_f4m_medium"
+        BASHO_BENCH_LOAD_CONF: "image_f4m_load.conf"
+        BASHO_BENCH_TEST_CONF: "image_f4m_r95w5_60min.conf"
+
+    - task: parse_log
+      file: leofs_concourse/tasks/parse_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "image_f4m_medium"
+        BASHO_BENCH_ERROR_THRES: 0.1
+
+    - put: leofs_notes
+      params: {repository: leofs_notes_update}
+
+    - task: leofs1m_f100k
+      file: leofs_concourse/tasks/run_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "leofs1m_f100k_medium"
+        BASHO_BENCH_LOAD_CONF: "leofs1m_f100k_load.conf"
+        BASHO_BENCH_TEST_CONF: "leofs1m_f100k_r95w5_60min.conf"
+
+    - task: parse_log
+      file: leofs_concourse/tasks/parse_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "leofs1m_f100k_medium"
+        BASHO_BENCH_ERROR_THRES: 0.1
+
+    - put: leofs_notes
+      params: {repository: leofs_notes_update}
+
+    - task: leofs15m_f10k
+      file: leofs_concourse/tasks/run_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "leofs15m_f10k_medium"
+        BASHO_BENCH_LOAD_CONF: "leofs15m_f10k_load.conf"
+        BASHO_BENCH_TEST_CONF: "leofs15m_f10k_r95w5_60min.conf"
+
+    - task: parse_log
+      file: leofs_concourse/tasks/parse_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "leofs15m_f10k_medium"
+        BASHO_BENCH_ERROR_THRES: 0.1
+
+    - put: leofs_notes
+      params: {repository: leofs_notes_update}
+
+  - name: leofs_deploy_large
+    plan:
+    - aggregate:
+      - get: leofs_concourse
+      - get: leofs_ansible
+      - get: leofs_src
+        passed: [basho_bench_medium]
+        trigger: true
+      - get: periodic
+        passed: [basho_bench_medium]
+        trigger: true
+      - get: leofs_basho_bench_src
+        passed: [basho_bench_medium]
+        trigger: true
+
+    - task: run_ansible_large
+      file: leofs_concourse/tasks/run_ansible.yml
+      params: 
+        DO_BUILD: false
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.large
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+
+  - name: basho_bench_large
+    plan:
+    - aggregate:
+      - get: leofs_src
+        passed: [leofs_deploy_large]
+        trigger: true
+      - get: periodic
+        passed: [leofs_deploy_large]
+        trigger: true
+      - get: leofs_basho_bench_src
+        passed: [leofs_deploy_large]
+        trigger: true
+      - get: leofs_concourse
+      - get: leofs_notes
+
+    - task: setup_basho_bench
+      file: leofs_concourse/tasks/setup_basho_bench.yml
+      params:
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+
+    - task: build_basho_bench
+      file: leofs_concourse/tasks/build_basho_bench.yml
+  
+    - task: image_f4m
+      file: leofs_concourse/tasks/run_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "image_f4m_large"
+        BASHO_BENCH_LOAD_CONF: "image_f4m_load.conf"
+        BASHO_BENCH_TEST_CONF: "image_f4m_r95w5_60min.conf"
+
+    - task: parse_log
+      file: leofs_concourse/tasks/parse_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "image_f4m_large"
+        BASHO_BENCH_ERROR_THRES: 0.1
+
+    - put: leofs_notes
+      params: {repository: leofs_notes_update}
+
+    - task: leofs1m_f100k
+      file: leofs_concourse/tasks/run_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "leofs1m_f100k_large"
+        BASHO_BENCH_LOAD_CONF: "leofs1m_f100k_load.conf"
+        BASHO_BENCH_TEST_CONF: "leofs1m_f100k_r95w5_60min.conf"
+
+    - task: parse_log
+      file: leofs_concourse/tasks/parse_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "leofs1m_f100k_large"
+        BASHO_BENCH_ERROR_THRES: 0.1
+
+    - put: leofs_notes
+      params: {repository: leofs_notes_update}
+
+    - task: leofs15m_f10k
+      file: leofs_concourse/tasks/run_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "leofs15m_f10k_large"
+        BASHO_BENCH_LOAD_CONF: "leofs15m_f10k_load.conf"
+        BASHO_BENCH_TEST_CONF: "leofs15m_f10k_r95w5_60min.conf"
+
+    - task: parse_log
+      file: leofs_concourse/tasks/parse_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "leofs15m_f10k_large"
         BASHO_BENCH_ERROR_THRES: 0.1
 
     - put: leofs_notes

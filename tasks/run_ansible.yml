@@ -13,6 +13,7 @@ params:
   ANSIBLE_KEY:
   LEOFS_GW_HOST:
   BUCKETS:
+  DO_BUILD:
 
 inputs:
 - name: leofs_concourse
