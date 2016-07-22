@@ -1,0 +1,21 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: mocchira/leofs_deploy
+
+params:
+  ANSIBLE_KEY:
+  LEOFS_GW_HOST:
+  LEOFS_GW_PORT:
+  LEOFS_MANAGER_NODE:
+  SCENARIO:
+
+inputs:
+- name: leofs_test2
+- name: leofs_concourse
+
+run:
+  path: leofs_concourse/scripts/run_leofs_test2.sh
