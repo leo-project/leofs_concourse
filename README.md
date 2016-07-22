@@ -20,7 +20,7 @@ In preparation
 
 ## Coverage
 ### Variation of a Test Configuration for LeoFS' CI
-- As of July 22nd, LeoFS' CI, the automation test tool covers cobination of the configuration as below:
+- As of July 22nd, 2016, LeoFS' CI, the automation test tool covers cobination of the configuration as below:
 ![leofs-configurations-mmap.1](leofs-configurations-mmap.2.png)
 
 
