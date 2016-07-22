@@ -91,3 +91,59 @@ jobs:
         params:
           text: |
             Scenario 2 at leofs_test2 Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+
+    - task: run_leofs_test2_3
+      file: leofs_concourse/tasks/run_leofs_test2.yml
+      params:
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+        LEOFS_MANAGER_NODE: {{LEOFS_MANAGER_NODE}}
+        SCENARIO: 3
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Scenario 3 at leofs_test2 Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+
+    - task: run_leofs_test2_4
+      file: leofs_concourse/tasks/run_leofs_test2.yml
+      params:
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+        LEOFS_MANAGER_NODE: {{LEOFS_MANAGER_NODE}}
+        SCENARIO: 4
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Scenario 4 at leofs_test2 Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+
+    - task: run_leofs_test2_5
+      file: leofs_concourse/tasks/run_leofs_test2.yml
+      params:
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+        LEOFS_MANAGER_NODE: {{LEOFS_MANAGER_NODE}}
+        SCENARIO: 5
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Scenario 5 at leofs_test2 Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+
+    - task: run_leofs_test2_6
+      file: leofs_concourse/tasks/run_leofs_test2.yml
+      params:
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+        LEOFS_MANAGER_NODE: {{LEOFS_MANAGER_NODE}}
+        SCENARIO: 6
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Scenario 6 at leofs_test2 Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
