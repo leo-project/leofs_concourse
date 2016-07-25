@@ -6,6 +6,7 @@ image: docker:///windkithk/leofs_parser
 params:
   BASHO_BENCH_TEST_NAME:
   BASHO_BENCH_ERROR_THRES:
+  SLACK_URL:
 
 inputs:
 - name: leofs_basho_bench_result

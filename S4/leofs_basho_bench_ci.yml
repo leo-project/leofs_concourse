@@ -86,6 +86,7 @@ jobs:
 ##      params:
 ##        BASHO_BENCH_TEST_NAME: "image_f4k"
 ##        BASHO_BENCH_ERROR_THRES: 0.1
+##        SLACK_URL: {{SLACK_URL}}
 ##
 ##    - put: leofs_notes
 ##      params: {repository: leofs_notes_update}
@@ -102,6 +103,7 @@ jobs:
       params:
         BASHO_BENCH_TEST_NAME: "image_f4m"
         BASHO_BENCH_ERROR_THRES: 0.1
+        SLACK_URL: {{SLACK_URL}}
 
     - put: leofs_notes
       params: {repository: leofs_notes_update}
@@ -118,6 +120,7 @@ jobs:
       params:
         BASHO_BENCH_TEST_NAME: "leofs1m_f100k"
         BASHO_BENCH_ERROR_THRES: 0.1
+        SLACK_URL: {{SLACK_URL}}
 
     - put: leofs_notes
       params: {repository: leofs_notes_update}
@@ -134,6 +137,7 @@ jobs:
       params:
         BASHO_BENCH_TEST_NAME: "leofs15m_f10k"
         BASHO_BENCH_ERROR_THRES: 0.1
+        SLACK_URL: {{SLACK_URL}}
 
     - put: leofs_notes
       params: {repository: leofs_notes_update}
@@ -197,6 +201,7 @@ jobs:
       params:
         BASHO_BENCH_TEST_NAME: "image_f4m_medium"
         BASHO_BENCH_ERROR_THRES: 0.1
+        SLACK_URL: {{SLACK_URL}}
 
     - put: leofs_notes
       params: {repository: leofs_notes_update}
@@ -213,6 +218,7 @@ jobs:
       params:
         BASHO_BENCH_TEST_NAME: "leofs1m_f100k_medium"
         BASHO_BENCH_ERROR_THRES: 0.1
+        SLACK_URL: {{SLACK_URL}}
 
     - put: leofs_notes
       params: {repository: leofs_notes_update}
@@ -229,6 +235,7 @@ jobs:
       params:
         BASHO_BENCH_TEST_NAME: "leofs15m_f10k_medium"
         BASHO_BENCH_ERROR_THRES: 0.1
+        SLACK_URL: {{SLACK_URL}}
 
     - put: leofs_notes
       params: {repository: leofs_notes_update}
@@ -292,6 +299,7 @@ jobs:
       params:
         BASHO_BENCH_TEST_NAME: "image_f4m_large"
         BASHO_BENCH_ERROR_THRES: 0.1
+        SLACK_URL: {{SLACK_URL}}
 
     - put: leofs_notes
       params: {repository: leofs_notes_update}
@@ -308,6 +316,7 @@ jobs:
       params:
         BASHO_BENCH_TEST_NAME: "leofs1m_f100k_large"
         BASHO_BENCH_ERROR_THRES: 0.1
+        SLACK_URL: {{SLACK_URL}}
 
     - put: leofs_notes
       params: {repository: leofs_notes_update}
@@ -324,6 +333,7 @@ jobs:
       params:
         BASHO_BENCH_TEST_NAME: "leofs15m_f10k_large"
         BASHO_BENCH_ERROR_THRES: 0.1
+        SLACK_URL: {{SLACK_URL}}
 
     - put: leofs_notes
       params: {repository: leofs_notes_update}

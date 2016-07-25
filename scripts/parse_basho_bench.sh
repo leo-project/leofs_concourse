@@ -5,9 +5,11 @@ set -x
 
 TEST_NAME=$BASHO_BENCH_TEST_NAME
 ERROR_THRES=$BASHO_BENCH_ERROR_THRES
+SLACK_WEBHOOK_URL=$SLACK_URL
 GRAFANA_BASE="http://192.168.100.31:3000"
 LEOFS_MANAGER_HOST="192.168.100.35"
 LEOFS_MANAGER_PORT=10010
+REPO_BASE_URL="https://github.com/windkit/test"
 
 BASE_DIR=$(pwd)
 cd $BASE_DIR/leofs_basho_bench_result/result_$TEST_NAME
@@ -53,3 +55,5 @@ git config --global user.name "Concourse"
 cd $BASE_DIR/leofs_notes_update
 git add .
 git commit -m "Added Test Case $TEST_NAME [$TIME]"
+
+curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Benchmark [$TEST_NAME] Completed, Check at <$REPO_BASE_URL/tree/master/$TARGET_DIR/${TEST_NAME}_$STIME>\"}" $SLACK_URL
