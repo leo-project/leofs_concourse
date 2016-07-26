@@ -4,7 +4,7 @@ leofs_version=1.2.22
 build_temp_path="/tmp/leofs_builder"
 build_install_path="/tmp/"
 build_branch="master"
-source="package"
+source="build"
 
 [builder]
 192.168.100.31

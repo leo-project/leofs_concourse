@@ -20,3 +20,5 @@ ansible-playbook -i $ANSIBLE_INVENTORY leofs_ansible/deploy_leofs.yml $SUDO_SWIT
 
 ./leofs-adm status
 ./leofs-adm add-endpoint $LEOFS_GW_HOST
+sleep 5
+./leofs-adm add-endpoint $LEOFS_GW_HOST

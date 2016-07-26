@@ -50,7 +50,6 @@ jobs:
       params:
         ANSIBLE_USER: {{ANSIBLE_USER}}
         ANSIBLE_KEY: {{ANSIBLE_KEY}}
-        ANSIBLE_SUDO: true
         ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.local
         LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
       on_failure:
