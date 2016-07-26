@@ -1,10 +1,12 @@
 ---
 platform: linux
 
-image_resource:
-  type: docker-image
-  source:
-    repository: mocchira/leofs_deploy
+image: docker:///mocchira/leofs_deploy
+
+#image_resource:
+#  type: docker-image
+#  source:
+#    repository: mocchira/leofs_deploy
 
 params:
   ANSIBLE_KEY:

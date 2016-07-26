@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
+set -x
 
+USER=$ANSIBLE_USER
 cp leofs_concourse/ansible/deploy_leofs4leofs_test2.yml leofs_ansible/deploy_leofs.yml
 
 echo $ANSIBLE_KEY > ansible_key
