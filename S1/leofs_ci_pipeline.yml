@@ -10,7 +10,7 @@ resources:
     type: git
     source:
       uri: https://github.com/leo-project/leofs_concourse.git
-      branch: master
+      branch: develop
   - name: leofs_ansible
     type: git
     source:
@@ -51,6 +51,7 @@ jobs:
       file: leofs_concourse/tasks/run_ansible.yml
       params: 
         ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        ANSIBLE_USER: {{ANSIBLE_USER}}
         ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.small 
         LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
       on_failure:

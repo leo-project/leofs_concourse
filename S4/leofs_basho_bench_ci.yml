@@ -46,6 +46,7 @@ jobs:
       file: leofs_concourse/tasks/run_ansible.yml
       params: 
         DO_BUILD: true
+        ANSIBLE_USER: {{ANSIBLE_USER}}
         ANSIBLE_KEY: {{ANSIBLE_KEY}}
         ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.small 
         LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
@@ -161,6 +162,7 @@ jobs:
       file: leofs_concourse/tasks/run_ansible.yml
       params: 
         DO_BUILD: false
+        ANSIBLE_USER: {{ANSIBLE_USER}}
         ANSIBLE_KEY: {{ANSIBLE_KEY}}
         ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.medium 
         LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
@@ -259,6 +261,7 @@ jobs:
       file: leofs_concourse/tasks/run_ansible.yml
       params: 
         DO_BUILD: false
+        ANSIBLE_USER: {{ANSIBLE_USER}}
         ANSIBLE_KEY: {{ANSIBLE_KEY}}
         ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.large
         LEOFS_GW_HOST: {{LEOFS_GW_HOST}}

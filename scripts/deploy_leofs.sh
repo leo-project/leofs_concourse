@@ -3,6 +3,7 @@ set -e
 
 SSH_KEY=$ANSIBLE_KEY
 INVETORY=$ANSIBLE_INVENTORY
+USER=$ANSIBLE_USER
 
 cd leofs_ansible
 
@@ -12,11 +13,17 @@ chmod 600 ansible_key
 
 cp ../leofs_concourse/ansible/deploy_leofs.yml .
 
-ansible-playbook -i ../leofs_concourse/ansible/hosts.large purge_leofs.yml -u wilson --private-key=ansible_key 
-if [ "$DO_BUILD" = true ]; then
-	ansible-playbook -i ../$ANSIBLE_INVENTORY build_leofs.yml -u wilson --private-key=ansible_key 
+if [ "$ANSIBLE_SUDO" = true ]; then
+    SUDO_SWITCH="-b"
+else
+    SUDO_SWITCH=""
 fi
-ansible-playbook -i ../$ANSIBLE_INVENTORY deploy_leofs.yml -u wilson --private-key=ansible_key 
+
+ansible-playbook -i ../$ANSIBLE_INVENTORY purge_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
+if [ "$DO_BUILD" = true ]; then
+	ansible-playbook -i ../$ANSIBLE_INVENTORY build_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
+fi
+ansible-playbook -i ../$ANSIBLE_INVENTORY deploy_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
 
 ./leofs-adm status
 ./leofs-adm add-endpoint $LEOFS_GW_HOST

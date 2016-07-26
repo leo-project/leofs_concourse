@@ -7,31 +7,34 @@ build_branch="master"
 source="package"
 
 [builder]
-192.168.0.10
+192.168.100.31
 
 # nodename of leo_manager_0 and leo_manager_1 are set at group_vars/all
 [leo_manager_0]
-192.168.0.101
+192.168.100.35 
 
 # nodename of leo_manager_0 and leo_manager_1 are set at group_vars/all
 [leo_manager_1]
-192.168.0.101
+192.168.100.35 
 
 [leo_storage]
-192.168.0.151 leofs_module_nodename=S0@192.168.0.151
-192.168.0.152 leofs_module_nodename=S1@192.168.0.152
-192.168.0.153 leofs_module_nodename=S2@192.168.0.153
-192.168.0.154 leofs_module_nodename=S3@192.168.0.154
-192.168.0.155 leofs_module_nodename=S4@192.168.0.155
+192.168.100.36 leofs_module_nodename=S0@192.168.100.36
+192.168.100.37 leofs_module_nodename=S1@192.168.100.37
+192.168.100.38 leofs_module_nodename=S2@192.168.100.38
+192.168.100.39 leofs_module_nodename=S3@192.168.100.39
+192.168.100.40 leofs_module_nodename=S4@192.168.100.40
 
 [leo_storage_up]
-192.168.0.151 leofs_module_nodename=S0@192.168.0.151
-192.168.0.152 leofs_module_nodename=S1@192.168.0.152
-192.168.0.153 leofs_module_nodename=S2@192.168.0.153
-192.168.0.154 leofs_module_nodename=S3@192.168.0.154
+192.168.100.36 leofs_module_nodename=S0@192.168.100.36
+192.168.100.37 leofs_module_nodename=S1@192.168.100.37
+192.168.100.38 leofs_module_nodename=S2@192.168.100.38
+192.168.100.39 leofs_module_nodename=S3@192.168.100.39
+
+[leo_storage:vars]
+leo_storage_container_paths=["/ssd/avs"]
 
 [leo_gateway]
-192.168.0.201 leofs_module_nodename=G0@192.168.0.201
+192.168.100.35 leofs_module_nodename=G0@192.168.100.35
 
 [leofs_nodes:children]
 leo_manager_0

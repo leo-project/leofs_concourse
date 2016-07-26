@@ -8,6 +8,7 @@ image_resource:
 
 params:
   ANSIBLE_KEY:
+  ANSIBLE_USER:
   LEOFS_GW_HOST:
   LEOFS_GW_PORT:
   LEOFS_MANAGER_NODE:

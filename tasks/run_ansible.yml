@@ -10,7 +10,9 @@ image: docker:///windkithk/leofs_deploy
 
 params:
   ANSIBLE_INVENTORY:
+  ANSIBLE_USER:
   ANSIBLE_KEY:
+  ANSIBLE_SUDO:
   LEOFS_GW_HOST:
   BUCKETS:
   DO_BUILD:
