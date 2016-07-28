@@ -41,7 +41,6 @@ jobs:
       - get: leofs_concourse
       - get: leofs_ansible
       - get: leofs_src
-        trigger: true
       - get: timer_daily
         trigger: true
       - get: leofs_client_tests
@@ -65,7 +64,6 @@ jobs:
     - aggregate:
       - get: leofs_src
         passed: [leofs_deploy]
-        trigger: true
       - get: timer_daily
         passed: [leofs_deploy]
         trigger: true

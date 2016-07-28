@@ -36,7 +36,6 @@ jobs:
       - get: leofs_concourse
       - get: leofs_ansible
       - get: leofs_src
-        trigger: true
       - get: periodic
         trigger: true
       - get: leofs_basho_bench_src
@@ -56,7 +55,6 @@ jobs:
     - aggregate:
       - get: leofs_src
         passed: [leofs_deploy]
-        trigger: true
       - get: periodic
         passed: [leofs_deploy]
         trigger: true
@@ -150,7 +148,6 @@ jobs:
       - get: leofs_ansible
       - get: leofs_src
         passed: [basho_bench]
-        trigger: true
       - get: periodic
         passed: [basho_bench]
         trigger: true
@@ -172,7 +169,6 @@ jobs:
     - aggregate:
       - get: leofs_src
         passed: [leofs_deploy_medium]
-        trigger: true
       - get: periodic
         passed: [leofs_deploy_medium]
         trigger: true
@@ -249,7 +245,6 @@ jobs:
       - get: leofs_ansible
       - get: leofs_src
         passed: [basho_bench_medium]
-        trigger: true
       - get: periodic
         passed: [basho_bench_medium]
         trigger: true
@@ -271,7 +266,6 @@ jobs:
     - aggregate:
       - get: leofs_src
         passed: [leofs_deploy_large]
-        trigger: true
       - get: periodic
         passed: [leofs_deploy_large]
         trigger: true

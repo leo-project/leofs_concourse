@@ -41,7 +41,6 @@ jobs:
       - get: leofs_concourse
       - get: leofs_ansible
       - get: leofs_src
-        trigger: true
       - get: timer_daily
         trigger: true
       - get: leofs_test2
@@ -72,7 +71,6 @@ jobs:
         trigger: true
       - get: leofs_src
         passed: [leofs_deploy]
-        trigger: true
 
     - task: run_leofs_test2_1
       file: leofs_concourse/tasks/run_leofs_test2.yml
