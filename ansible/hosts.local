@@ -30,9 +30,6 @@ source="build"
 192.168.100.38 leofs_module_nodename=S2@192.168.100.38
 192.168.100.39 leofs_module_nodename=S3@192.168.100.39
 
-[leo_storage:vars]
-leo_storage_container_paths=["/ssd/avs"]
-
 [leo_gateway]
 192.168.100.35 leofs_module_nodename=G0@192.168.100.35
 
