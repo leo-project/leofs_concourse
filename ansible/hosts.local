@@ -3,7 +3,7 @@
 leofs_version=1.2.22
 build_temp_path="/tmp/leofs_builder"
 build_install_path="/tmp/"
-build_branch="master"
+build_branch="develop"
 source="build"
 
 [builder]

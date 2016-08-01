@@ -3,6 +3,7 @@
 leofs_version="master"
 build_temp_path="/tmp/leofs_builder"
 build_install_path="/tmp/"
+build_branch="develop"
 source="build"
 
 [builder]

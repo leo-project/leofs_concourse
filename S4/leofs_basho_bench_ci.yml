@@ -13,7 +13,7 @@ resources:
     type: git
     source:
       uri: https://github.com/leo-project/leofs.git
-      branch: master
+      branch: develop
   - name: leofs_basho_bench_src
     type: git
     source:
