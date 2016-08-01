@@ -5,6 +5,7 @@ image: docker:///windkithk/leofs_tester
 
 params:
   CLIENT_TEST_SDK:
+  AWS_SIGN_VER:
   LEOFS_GW_HOST:
   LEOFS_GW_PORT:
 
