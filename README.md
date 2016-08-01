@@ -9,7 +9,7 @@ A continuous integration tool for LeoFS' tests and shipment, which is powered by
 | No.| Status   | Name                                                                                                              | Description                           |
 |----|----------|-------------------------------------------------------------------------------------------------------------------|---------------------------------------|
 | 1  | **Beta** | [Client Test w/LeoFS Ansible](https://github.com/leo-project/leofs_concourse/tree/master/S1)                      | S3 SDKs Test CI                       |
-| 2  | **WIP**  | [Integration Test w/LeoFS Ansible](https://github.com/leo-project/leofs_concourse/tree/master/S2)                 | Functional Tests                      |
+| 2  | **Beta**  | [Integration Test w/LeoFS Ansible](https://github.com/leo-project/leofs_concourse/tree/master/S2)                 | Functional Tests                      |
 | 3  | ToDo     | [Multi Data Center Test w/LeoFS Ansible]()                                                                        | Multi Data Center Replication Test    |
 | 4  | **Beta** | [Performance Test w/Basho Bench and LeoFS Ansible](https://github.com/leo-project/leofs_concourse/tree/master/S4) | Performance Test with [Basho Bench](https://github.com/leo-project/basho_bench) |
 | 5  | ToDo     | [Build Test + Making packages for LeoFS shipment]()                                                               | Builing LeoFS' packages for a shipment|
