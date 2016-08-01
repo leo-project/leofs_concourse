@@ -161,3 +161,7 @@ jobs:
         params:
           text: |
             Scenario 6 at leofs_test2 Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+    - put: slack-alert
+      params:
+        text: |
+          leofs_test2 CI Completed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
