@@ -24,7 +24,7 @@ resources:
   - name: leofs_test2
     type: git
     source:
-      uri: https://github.com/windkit/leofs_test2.git
+      uri: https://github.com/leo-project/leofs_test2.git
       branch: feature/concourse
   - name: timer_daily
     type: time
