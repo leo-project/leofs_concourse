@@ -119,3 +119,60 @@ jobs:
       params:
         text: |
           Client Test CI Completed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+  - name: client_test_v4
+    plan:
+    - aggregate:
+      - get: leofs_src
+        passed: [client_test]
+      - get: timer_daily
+        passed: [client_test]
+        trigger: true
+      - get: leofs_client_tests
+        passed: [client_test]
+        trigger: true
+      - get: leofs_concourse
+    - aggregate:
+      - task: aws-sdk-go
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "aws-sdk-go"
+            AWS_SIGN_VER: "v4"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+      - task: aws-sdk-java
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "aws-sdk-java"
+            AWS_SIGN_VER: "v4"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+      - task: aws-sdk-php
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "aws-sdk-php"
+            AWS_SIGN_VER: "v4"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+      - task: aws-sdk-ruby
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "aws-sdk-ruby"
+            AWS_SIGN_VER: "v4"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+      - task: boto
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "boto"
+            AWS_SIGN_VER: "v4"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Client Test (Sign V4) CI Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+    - put: slack-alert
+      params:
+        text: |
+          Client Test (Sign V4) CI Completed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
