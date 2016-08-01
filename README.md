@@ -8,19 +8,21 @@ A continuous integration tool for LeoFS' tests and shipment, which is powered by
 
 | No.| Status   | Name                                                                                                              | Description                           |
 |----|----------|-------------------------------------------------------------------------------------------------------------------|---------------------------------------|
-| 1  | **Beta** | [Client Test w/LeoFS Ansible](https://github.com/leo-project/leofs_concourse/tree/master/S1)                      | S3 SDKs Test CI                       |
-| 2  | **Beta**  | [Integration Test w/LeoFS Ansible](https://github.com/leo-project/leofs_concourse/tree/master/S2)                 | Functional Tests                      |
-| 3  | ToDo     | [Multi Data Center Test w/LeoFS Ansible]()                                                                        | Multi Data Center Replication Test    |
+| 1  | **Beta** | [Client Test w/LeoFS Ansible](https://github.com/leo-project/leofs_concourse/tree/master/S1)                      | S3 SDKs Tests                         |
+| 2  | **Beta** | [Integration Test w/LeoFS Ansible](https://github.com/leo-project/leofs_concourse/tree/master/S2)                 | Functional Tests                      |
+| 3  | ToDo     | [Multi Data Center Test w/LeoFS Ansible]()                                                                        | Multi Data Center Replication Tests   |
 | 4  | **Beta** | [Performance Test w/Basho Bench and LeoFS Ansible](https://github.com/leo-project/leofs_concourse/tree/master/S4) | Performance Test with [Basho Bench](https://github.com/leo-project/basho_bench) |
-| 5  | ToDo     | [Build Test + Making packages for LeoFS shipment]()                                                               | Builing LeoFS' packages for a shipment|
+| 5-1| **WIP**  | [LeoFS' Gateway Protocol Test, NFS](https://github.com/leo-project/leofs_concourse/tree/master/S5/NFS)            | NFS Support Tests                     |
+| 5-2| **WIP**  | [LeoFS' Gateway Protocol Test, REST](https://github.com/leo-project/leofs_concourse/tree/master/S5/REST)          | REST Support Tests                    |
+| 6  | ToDo     | [Build Test + Making packages for LeoFS shipment]()                                                               | Builing LeoFS' packages for a shipment|
 
 ## Optional Scenarios
 In preparation
 
 
 ## Coverage
-### Kind of a Test Configuration for LeoFS' CI
-- As of July 22nd, 2016, LeoFS' CI, the automation test tool covers cobination of the configuration as below:
+### Kind of Test Configurations for LeoFS' CI
+- As of Aug 1st, 2016, LeoFS' CI, the automation test tool covers cobination of the configuration as below:
 ![leofs-configurations-mmap.1](leofs-configurations-mmap.2.png)
 
 
