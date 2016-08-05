@@ -49,6 +49,7 @@ jobs:
     - task: run_ansible
       file: leofs_concourse/tasks/run_ansible4leofs_test2.yml
       params:
+        DO_BUILD: true
         ANSIBLE_USER: {{ANSIBLE_USER}}
         ANSIBLE_KEY: {{ANSIBLE_KEY}}
         ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.local
