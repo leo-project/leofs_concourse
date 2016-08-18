@@ -1,0 +1,11 @@
+{mode,      max}.
+{duration,   1000}.
+{concurrent, 16}.
+
+{driver, basho_bench_driver_file}.
+
+{target_dir_path, "/mnt/leofs"}.
+
+{key_generator, {partitioned_sequential_int, 4000}}.
+{value_generator, {size_groups_bin, [{15, 4096, 8192},{25, 8192, 16384}, {23, 16384, 32768}, {22, 32768, 65536}, {15, 65536, 131072}]}}.
+{operations, [{write,1}]}.

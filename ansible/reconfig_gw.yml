@@ -1,0 +1,21 @@
+---
+
+## Stop LeoGateway
+- hosts: leo_gateway
+  name: Stop LeoGateway
+  ignore_errors: True
+  roles:
+      - { role: leo_gateway, control_leofs: "stop" }
+
+## Do Configuration
+- hosts: leo_gateway
+  name: Config LeoGateway
+  roles:
+      - { role: leo_gateway, do_config: true }
+
+## Start LeoGateway
+- hosts: leo_gateway
+  name: Stop LeoGateway
+  ignore_errors: True
+  roles:
+      - { role: leo_gateway, control_leofs: "start" }

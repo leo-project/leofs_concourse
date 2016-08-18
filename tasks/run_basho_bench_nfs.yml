@@ -1,0 +1,22 @@
+---
+platform: linux
+
+image: docker:///windkithk/leofs_basho_bench
+
+params:
+  LEOFS_GW_HOST:
+  NFS_MOUNT_TOKEN:
+  BASHO_BENCH_TEST_NAME:
+  BASHO_BENCH_LOAD_CONF:
+  BASHO_BENCH_TEST_CONF:
+
+inputs:
+- name: leofs_concourse
+- name: leofs_basho_bench_bin
+- name: leofs_basho_bench_conf
+
+outputs:
+- name: leofs_basho_bench_result
+
+run:
+  path: leofs_concourse/scripts/run_basho_bench_nfs.sh

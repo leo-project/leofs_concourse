@@ -1,3 +1,10 @@
+resource_types:
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
+    tag: latest
+
 resources:
   - name: leofs_concourse
     type: git
@@ -17,11 +24,21 @@ resources:
   - name: leofs_basho_bench_src
     type: git
     source:
-      uri: https://github.com/leo-project/basho_bench.git
+      uri: https://github.com/windkit/basho_bench.git
       branch: 1.4
-  - name: periodic
+  - name: leofs_notes
+    type: git
+    source:
+      uri: git@github.com:windkit/test.git
+      branch: master
+      private_key: {{ANSIBLE_KEY}}
+  - name: timer_daily
     type: time
-    source: {interval: 72h}
+    source: {interval: 24h}
+  - name: slack-alert
+    type: slack-notification
+    source:
+      url: {{SLACK_URL}}
 
 jobs:
   - name: leofs_deploy
@@ -30,7 +47,7 @@ jobs:
       - get: leofs_concourse
       - get: leofs_ansible
       - get: leofs_src
-      - get: periodic
+      - get: timer_daily
         trigger: true
       - get: leofs_basho_bench_src
         trigger: true
@@ -49,13 +66,14 @@ jobs:
     - aggregate:
       - get: leofs_src
         passed: [leofs_deploy]
-      - get: periodic
+      - get: timer_daily
         passed: [leofs_deploy]
         trigger: true
       - get: leofs_basho_bench_src
         passed: [leofs_deploy]
         trigger: true
       - get: leofs_concourse
+      - get: leofs_notes
 
     - task: setup_basho_bench
       file: leofs_concourse/tasks/setup_basho_bench.yml
@@ -65,18 +83,101 @@ jobs:
 
     - task: build_basho_bench
       file: leofs_concourse/tasks/build_basho_bench.yml
-  
-    - task: rest
+
+    - task: basho_bench
+      privileged: true
       file: leofs_concourse/tasks/run_basho_bench.yml
       params:
-        BASHO_BENCH_TEST_NAME: "image_f4k"
+        BASHO_BENCH_TEST_NAME: "image_f4k_rest"
         BASHO_BENCH_LOAD_CONF: "image_f4k_load.conf"
         BASHO_BENCH_TEST_CONF: "image_f4k_r95w5_5min.conf"
 
     - task: parse_log
       file: leofs_concourse/tasks/parse_basho_bench.yml
       params:
-        BASHO_BENCH_TEST_NAME: "image_f4k"
+        BASHO_BENCH_TEST_NAME: "image_f4k_rest"
         BASHO_BENCH_ERROR_THRES: 0.1
-        SLACK_URL: {{SLACK_URL}}
         CHECK_ONLY: true
+
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            REST Test CI Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+      on_success:
+        put: slack-alert
+        params:
+          text: |
+            REST Test CI Completed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+
+  - name: reconfig_gateway
+    plan:
+    - aggregate:
+      - get: leofs_src
+        passed: [basho_bench_rest]
+      - get: leofs_concourse
+      - get: leofs_ansible
+      - get: timer_daily
+        passed: [basho_bench_rest]
+        trigger: true
+      - get: leofs_basho_bench_src
+        passed: [basho_bench_rest]
+        trigger: true
+
+    - task: reconfig_gw
+      file: leofs_concourse/tasks/reconfig_gw.yml
+      params: 
+        ANSIBLE_USER: {{ANSIBLE_USER}}
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.small.nfs 
+
+  - name: basho_bench_nfs
+    plan:
+    - aggregate:
+      - get: leofs_src
+        passed: [reconfig_gateway]
+      - get: timer_daily
+        passed: [reconfig_gateway]
+        trigger: true
+      - get: leofs_basho_bench_src
+        passed: [reconfig_gateway]
+        trigger: true
+      - get: leofs_concourse
+      - get: leofs_notes
+
+    - task: setup_basho_bench
+      file: leofs_concourse/tasks/setup_basho_bench.yml
+      params:
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+
+    - task: build_basho_bench
+      file: leofs_concourse/tasks/build_basho_bench.yml
+
+    - task: basho_bench
+      privileged: true
+      file: leofs_concourse/tasks/run_basho_bench_nfs.yml
+      params:
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        NFS_MOUNT_TOKEN: {{NFS_MOUNT_TOKEN}}
+        BASHO_BENCH_TEST_NAME: "lfile_image_f4k"
+        BASHO_BENCH_LOAD_CONF: "lfile_image_f4k_load.conf"
+        BASHO_BENCH_TEST_CONF: "lfile_image_f4k_r95w5_5min.conf"
+
+    - task: parse_log
+      file: leofs_concourse/tasks/parse_basho_bench.yml
+      params:
+        BASHO_BENCH_TEST_NAME: "lfile_image_f4k"
+        BASHO_BENCH_ERROR_THRES: 0.1
+        CHECK_ONLY: true
+
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            NFS Test CI Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+      on_success:
+        put: slack-alert
+        params:
+          text: |
+            NFS Test CI Completed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
