@@ -24,6 +24,10 @@ if [ $FAILED -eq 1 ]; then
 	exit 1
 fi
 
+if [ "$CHECK_ONLY" = true ]; then
+    exit 0
+fi
+
 echo "status" | nc $LEOFS_MANAGER_HOST $LEOFS_MANAGER_PORT > status_file
 LEOFS_VERSION=$(grep "system version" status_file | cut -f 2 -d\| | xargs echo -n | tr -d '\r')
 

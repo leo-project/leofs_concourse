@@ -7,6 +7,7 @@ params:
   BASHO_BENCH_TEST_NAME:
   BASHO_BENCH_ERROR_THRES:
   SLACK_URL:
+  CHECK_ONLY:
 
 inputs:
 - name: leofs_basho_bench_result
