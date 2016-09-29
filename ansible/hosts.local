@@ -30,11 +30,15 @@ source="build"
 192.168.100.38 leofs_module_nodename=S2@192.168.100.38
 192.168.100.39 leofs_module_nodename=S3@192.168.100.39
 
+[leo_storage:vars]
+leofs_log_level=1
+
 [leo_gateway]
 192.168.100.35 leofs_module_nodename=G0@192.168.100.35
 
 [leo_gateway:vars]
 leo_gateway_dcache_size=0
+leofs_log_level=1
 
 [leofs_nodes:children]
 leo_manager_0
