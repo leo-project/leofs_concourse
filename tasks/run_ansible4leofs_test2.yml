@@ -1,12 +1,10 @@
 ---
 platform: linux
 
-image: docker:///windkithk/leofs_deploy
-
-#image_resource:
-#  type: docker-image
-#  source:
-#    repository: windkithk/leofs_deploy
+image_resource:
+  type: docker-image
+  source:
+    repository: windkithk/leofs_deploy
 
 params:
   ANSIBLE_INVENTORY:

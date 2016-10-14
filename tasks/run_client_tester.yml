@@ -1,7 +1,10 @@
 ---
 platform: linux
 
-image: docker:///windkithk/leofs_tester
+image_resource:
+  type: docker-image
+  source:
+    repository: windkithk/leofs_tester
 
 params:
   CLIENT_TEST_SDK:

@@ -1,7 +1,10 @@
 ---
 platform: linux
 
-image: docker:///windkithk/leofs_parser
+image_resource:
+  type: docker-image
+  source:
+    repository: windkithk/leofs_parser
 
 params:
   BASHO_BENCH_TEST_NAME:

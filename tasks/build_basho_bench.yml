@@ -1,7 +1,10 @@
 ---
 platform: linux
 
-image: docker:///windkithk/leofs_basho_bench
+image_resource:
+  type: docker-image
+  source:
+    repository: windkithk/leofs_basho_bench
 
 inputs:
 - name: leofs_concourse
