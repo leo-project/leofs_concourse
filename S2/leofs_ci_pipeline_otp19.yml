@@ -1,0 +1,168 @@
+resource_types:
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
+    tag: latest
+
+resources:
+  - name: leofs_concourse
+    type: git
+    source:
+      uri: https://github.com/leo-project/leofs_concourse.git
+      branch: develop
+  - name: leofs_ansible
+    type: git
+    source:
+      uri: https://github.com/leo-project/leofs_ansible.git
+      branch: master
+  - name: leofs_src
+    type: git
+    source:
+      uri: https://github.com/leo-project/leofs.git
+      branch: develop
+  - name: leofs_test2
+    type: git
+    source:
+      uri: https://github.com/leo-project/leofs_test2.git
+      branch: feature/concourse
+  - name: timer_daily
+    type: time
+    source: {interval: 24h}
+  - name: slack-alert
+    type: slack-notification
+    source:
+      url: {{SLACK_URL}}
+
+jobs:
+  - name: leofs_deploy
+    plan:
+    - aggregate:
+      - get: leofs_concourse
+      - get: leofs_ansible
+      - get: leofs_src
+      - get: timer_daily
+        trigger: true
+      - get: leofs_test2
+        trigger: true
+
+    - task: run_ansible
+      file: leofs_concourse/tasks/run_ansible4leofs_test2.yml
+      params:
+        DO_BUILD: true
+        ANSIBLE_USER: {{ANSIBLE_USER}}
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.local.otp18
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Deploy LeoFS Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+
+  - name: integration_test
+    plan:
+    - aggregate:
+      - get: leofs_concourse
+      - get: leofs_test2
+        passed: [leofs_deploy]
+        trigger: true
+      - get: timer_daily
+        passed: [leofs_deploy]
+        trigger: true
+      - get: leofs_src
+        passed: [leofs_deploy]
+
+    - task: run_leofs_test2_1
+      file: leofs_concourse/tasks/run_leofs_test2.yml
+      params:
+        ANSIBLE_USER: {{ANSIBLE_USER}}
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+        LEOFS_MANAGER_NODE: {{LEOFS_MANAGER_NODE}}
+        SCENARIO: 1
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Scenario 1 at leofs_test2 (OTP 19.1) Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+
+    - task: run_leofs_test2_2
+      file: leofs_concourse/tasks/run_leofs_test2.yml
+      params:
+        ANSIBLE_USER: {{ANSIBLE_USER}}
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+        LEOFS_MANAGER_NODE: {{LEOFS_MANAGER_NODE}}
+        SCENARIO: 2
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Scenario 2 at leofs_test2 (OTP19.1) Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+
+    - task: run_leofs_test2_3
+      file: leofs_concourse/tasks/run_leofs_test2.yml
+      params:
+        ANSIBLE_USER: {{ANSIBLE_USER}}
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+        LEOFS_MANAGER_NODE: {{LEOFS_MANAGER_NODE}}
+        SCENARIO: 3
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Scenario 3 at leofs_test2 (OTP 19.1) Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+
+    - task: run_leofs_test2_4
+      file: leofs_concourse/tasks/run_leofs_test2.yml
+      params:
+        ANSIBLE_USER: {{ANSIBLE_USER}}
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+        LEOFS_MANAGER_NODE: {{LEOFS_MANAGER_NODE}}
+        SCENARIO: 4
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Scenario 4 at leofs_test2 (OTP 19.1) Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+
+    - task: run_leofs_test2_5
+      file: leofs_concourse/tasks/run_leofs_test2.yml
+      params:
+        ANSIBLE_USER: {{ANSIBLE_USER}}
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+        LEOFS_MANAGER_NODE: {{LEOFS_MANAGER_NODE}}
+        SCENARIO: 5
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Scenario 5 at leofs_test2 (OTP 19.1) Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+
+    - task: run_leofs_test2_6
+      file: leofs_concourse/tasks/run_leofs_test2.yml
+      params:
+        ANSIBLE_USER: {{ANSIBLE_USER}}
+        ANSIBLE_KEY: {{ANSIBLE_KEY}}
+        LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+        LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+        LEOFS_MANAGER_NODE: {{LEOFS_MANAGER_NODE}}
+        SCENARIO: 6
+      on_failure:
+        put: slack-alert
+        params:
+          text: |
+            Scenario 6 at leofs_test2 (OTP 19.1) Failed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
+    - put: slack-alert
+      params:
+        text: |
+          leofs_test2 (OTP 19.1) CI Completed, check at $ATC_EXTERNAL_URL/builds/$BUILD_ID
