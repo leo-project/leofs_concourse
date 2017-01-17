@@ -44,6 +44,11 @@ elif [ $SDK == "boto" ]
 then
 	(python LeoFSTest.py $SIGN_VER $GW_HOST $GW_PORT testb$SIGN_VER)
 
+
+elif [ $SDK == "boto3" ]
+then
+	(python LeoFSTest.py $SIGN_VER $GW_HOST $GW_PORT testb3$SIGN_VER)
+
 elif [ $SDK == "erlcloud" ]
 then
     if [ $SIGN_VER == "v4" ]; then
