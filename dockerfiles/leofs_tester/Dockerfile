@@ -23,4 +23,4 @@ apt-get -qq install maven
 RUN \
 mkdir $HOMR/go && export GOPATH=$HOME/go && go get github.com/aws/aws-sdk-go/service/s3 && \
 gem install aws-sdk content_type && \
-pip install boto filechunkio
+pip install boto filechunkio boto3
