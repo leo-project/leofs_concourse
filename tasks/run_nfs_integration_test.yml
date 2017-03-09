@@ -1,0 +1,18 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: windkithk/leofs_basho_bench
+
+params:
+  LEOFS_GW_HOST:
+  NFS_MOUNT_TOKEN:
+
+inputs:
+- name: leofs_concourse
+- name: leofs_src
+
+run:
+  path: leofs_concourse/scripts/run_nfs_integration_test.sh

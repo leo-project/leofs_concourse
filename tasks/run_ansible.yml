@@ -14,6 +14,7 @@ params:
   LEOFS_GW_HOST:
   BUCKETS:
   DO_BUILD:
+  SEND_AVS_ARCHIVE:
 
 inputs:
 - name: leofs_concourse

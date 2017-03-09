@@ -23,6 +23,10 @@ ansible-playbook -i ../$ANSIBLE_INVENTORY purge_leofs.yml $SUDO_SWITCH -u $USER 
 if [ "$DO_BUILD" = true ]; then
 	ansible-playbook -i ../$ANSIBLE_INVENTORY build_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
 fi
+
+if [ "$SEND_AVS_ARCHIVE" != "" ]; then
+    ansible-playbook -i ../$ANSIBLE_INVENTORY send_avs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key -e leo_storage_avs_archive=../$SEND_AVS_ARCHIVE
+fi
 ansible-playbook -i ../$ANSIBLE_INVENTORY deploy_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
 
 ./leofs-adm status

@@ -18,7 +18,7 @@ resources:
     type: git
     source:
       uri: https://github.com/leo-project/basho_bench.git
-      branch: 1.4
+      branch: master
   - name: leofs_notes
     type: git
     source:

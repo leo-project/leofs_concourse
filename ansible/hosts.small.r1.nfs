@@ -13,6 +13,12 @@ source="build"
 [leo_manager_0]
 192.168.100.35 
 
+[leo_manager_0:vars]
+leofs_num_of_replica=1
+leofs_write_quorum=1
+leofs_delete_quorum=1
+leofs_read_quorum=1
+
 # nodename of leo_manager_0 and leo_manager_1 are set at group_vars/all
 [leo_manager_1]
 192.168.100.35 
