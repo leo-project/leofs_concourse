@@ -15,6 +15,7 @@ else
     SUDO_SWITCH=""
 fi
 
+ansible-playbook -i $ANSIBLE_INVENTORY leofs_ansible/stop_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
 ansible-playbook -i $ANSIBLE_INVENTORY leofs_ansible/purge_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
 ansible-playbook -i $ANSIBLE_INVENTORY leofs_ansible/build_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
 ansible-playbook -i $ANSIBLE_INVENTORY leofs_ansible/deploy_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 

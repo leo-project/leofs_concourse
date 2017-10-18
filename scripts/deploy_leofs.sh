@@ -19,7 +19,9 @@ else
     SUDO_SWITCH=""
 fi
 
+ansible-playbook -i ../$ANSIBLE_INVENTORY stop_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
 ansible-playbook -i ../$ANSIBLE_INVENTORY purge_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
+
 if [ "$DO_BUILD" = true ]; then
 	ansible-playbook -i ../$ANSIBLE_INVENTORY build_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
 fi
