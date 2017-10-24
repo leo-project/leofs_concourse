@@ -44,6 +44,7 @@ jobs:
       - get: timer_daily
         trigger: true
       - get: leofs_client_tests
+        params: {depth: 5}
         trigger: true
 
     - task: run_ansible

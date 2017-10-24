@@ -24,8 +24,8 @@ resources:
   - name: leofs_test2
     type: git
     source:
-      uri: https://github.com/leo-project/leofs_test2.git
-      branch: feature/concourse
+      uri: https://github.com/windkit/leofs_test2.git
+      branch: concourse
   - name: timer_daily
     type: time
     source: {interval: 24h}
@@ -46,10 +46,13 @@ jobs:
       - get: leofs_test2
         trigger: true
 
+    - task: build_leofs
+      file: leofs_concourse/tasks/build_leofs.yml
+
     - task: run_ansible
       file: leofs_concourse/tasks/run_ansible4leofs_test2.yml
       params:
-        DO_BUILD: true
+        DO_BUILD: false
         ANSIBLE_USER: {{ANSIBLE_USER}}
         ANSIBLE_KEY: {{ANSIBLE_KEY}}
         ANSIBLE_INVENTORY: leofs_concourse/ansible/hosts.local

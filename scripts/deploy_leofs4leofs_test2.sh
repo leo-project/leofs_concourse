@@ -17,7 +17,9 @@ fi
 
 ansible-playbook -i $ANSIBLE_INVENTORY leofs_ansible/stop_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
 ansible-playbook -i $ANSIBLE_INVENTORY leofs_ansible/purge_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
-ansible-playbook -i $ANSIBLE_INVENTORY leofs_ansible/build_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
+if [ "$DO_BUILD" = true ]; then
+    ansible-playbook -i $ANSIBLE_INVENTORY leofs_ansible/build_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
+fi
 ansible-playbook -i $ANSIBLE_INVENTORY leofs_ansible/deploy_leofs.yml $SUDO_SWITCH -u $USER --private-key=ansible_key 
 
 ./leofs-adm status

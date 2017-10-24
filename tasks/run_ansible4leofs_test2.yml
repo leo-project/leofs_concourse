@@ -16,7 +16,7 @@ params:
 inputs:
 - name: leofs_concourse
 - name: leofs_ansible
-- name: leofs_src
+- name: leofs_bin
 
 run:
   path: leofs_concourse/scripts/deploy_leofs4leofs_test2.sh
