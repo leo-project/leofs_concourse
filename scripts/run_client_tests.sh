@@ -65,4 +65,12 @@ then
     else
         (mvn dependency:copy-dependencies; ant -Dsignver=$SIGN_VER -Dhost=$GW_HOST -Dport=$GW_PORT -Dbucket="testj$SIGN_VER")
     fi
+elif [ $SDK == "s3cmd" ]
+then
+    curl -sL https://github.com/s3tools/s3cmd/releases/download/v2.0.1/s3cmd-2.0.1.tar.gz -o s3cmd.tar.gz && tar xf s3cmd.tar.gz && export PATH=$PATH:`pwd`/s3cmd-2.0.1
+    if [ $SIGN_VER == "v4" ]; then
+        (cp ../../leofs_concourse/S1/s3cmd_v4.cfg ~/.s3cfg; ./s3cmd.sh)
+    else
+        (cp ../../leofs_concourse/S1/s3cmd_v2.cfg ~/.s3cfg; ./s3cmd.sh)
+    fi
 fi
