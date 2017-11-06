@@ -116,6 +116,12 @@ jobs:
             CLIENT_TEST_SDK: "jclouds"
             LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
             LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+      - task: s3cmd
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "s3cmd"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
       on_failure:
         put: slack-alert
         params:
