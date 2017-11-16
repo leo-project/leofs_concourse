@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 RUN \
    apt-get -qq update \
-&& apt-get -qq install git curl software-properties-common build-essential \
+&& apt-get -qq install git curl software-properties-common build-essential cmake \
 && apt-get -qq clean \
 && rm -rf /var/lib/apt/lists/
 RUN \
@@ -49,6 +49,13 @@ ENV PATH=/usr/lib/go-1.8/bin:$PATH
 
 RUN \
    go get github.com/aws/aws-sdk-go/service/s3
+
+## aws-sdk-cpp
+RUN \
+   apt-get update \
+&& apt-get install -y libssl-dev libcurl4-openssl-dev \
+&& apt-get clean \
+&& rm -rf /var/lib/apt/lists/
 
 ##RUN \
 ##   curl -sL https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb -o /tmp/esl.deb \

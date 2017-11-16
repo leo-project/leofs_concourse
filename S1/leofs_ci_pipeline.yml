@@ -172,6 +172,13 @@ jobs:
             AWS_SIGN_VER: "v4"
             LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
             LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
+      - task: aws-sdk-cpp
+        file: leofs_concourse/tasks/run_client_tester.yml
+        params:
+            CLIENT_TEST_SDK: "aws-sdk-cpp"
+            AWS_SIGN_VER: "v4"
+            LEOFS_GW_HOST: {{LEOFS_GW_HOST}}
+            LEOFS_GW_PORT: {{LEOFS_GW_PORT}}
       - task: boto
         file: leofs_concourse/tasks/run_client_tester.yml
         params:

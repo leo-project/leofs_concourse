@@ -37,8 +37,14 @@ then
 
 elif [ $SDK == "aws-sdk-ruby" ]
 then
-	(echo "$GW_HOST testr$SIGN_VER.$GW_HOST" >> /etc/hosts)
-	(ruby LeoFSTest.rb $SIGN_VER $GW_HOST $GW_PORT testr$SIGN_VER)
+    (echo "$GW_HOST testr$SIGN_VER.$GW_HOST" >> /etc/hosts)
+    (ruby LeoFSTest.rb $SIGN_VER $GW_HOST $GW_PORT testr$SIGN_VER)
+
+elif [ $SDK == "aws-sdk-cpp" ]
+then
+    (echo "$GW_HOST testc$SIGN_VER.$GW_HOST" >> /etc/hosts)
+    (mkdir build; cd build; cmake -DBUILD_ONLY="s3" ..; make -j4; cd ..)
+    (build/LeoFSTest.cpp $SIGN_VER $GW_HOST $GW_PORT testc$SIGN_VER)
 
 elif [ $SDK == "boto" ]
 then
